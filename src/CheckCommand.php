@@ -79,7 +79,7 @@ class CheckCommand extends Command
             }
 
             for ($i = 3; $i < 15; $i ++) {
-                if (trim($row[$i]) != '') {
+                if (isset($row[$i]) && trim($row[$i]) != '') {
                     $courseRs[$courseName][] = $row[$i];
                 }
             }
