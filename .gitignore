@@ -1,0 +1,9 @@
+/nbproject/*
+/.idea
+/config/*.config.ini
+/vendor
+.env
+composer.lock
+config/client_secret.json
+config/lunch.php
+config/credentials/sheets.googleapis.com-php-quickstart.json

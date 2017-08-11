@@ -1,0 +1,20 @@
+{
+    "name": "hungtran/googlesheet",
+    "require": {
+        "google/apiclient": "^2.2",
+        "symfony/console": "^3.3",
+        "phpmailer/phpmailer": "^5.2",
+        "vlucas/phpdotenv": "^2.4"
+    },
+    "authors": [
+        {
+            "name": "Hung Tran",
+            "email": "hung.tran@seldatinc.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Acme\\": "src"
+        }
+    }
+}
