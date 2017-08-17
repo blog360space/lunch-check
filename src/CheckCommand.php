@@ -40,7 +40,10 @@ class CheckCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $day = $input->getArgument('day');        
+        $day = $input->getArgument('day');
+        if ($day === false) {
+            exit();
+        }        
         
         // Get the API client and construct the service object.
         $client = $this->getClient();
