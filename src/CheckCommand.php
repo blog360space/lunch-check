@@ -27,13 +27,21 @@ class CheckCommand extends Command
      */
     public function configure()
     {
+        date_default_timezone_set('Asia/Bangkok');
+
         $this->setName("check")
                 ->setDescription("Report luch by google sheet.")
-                ->addArgument('day', InputArgument::OPTIONAL, 'Day nunmber to check. Defaul is to day', date('d'));
+                ->addArgument('day', 
+                     InputArgument::OPTIONAL, 
+                     'Day nunmber to check. Defaul is to day', 
+                     $this->getDay()
+                 );
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $day = $input->getArgument('day');        
+        
         // Get the API client and construct the service object.
         $client = $this->getClient();
         $service = new Google_Service_Sheets($client);
@@ -42,7 +50,6 @@ class CheckCommand extends Command
         // https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
         $spreadsheetId = $this->config['sheet_id'];
         
-        $day = $input->getArgument('day');        
         $range = $day . '!B1:Q';
         $response = $service->spreadsheets_values->get($spreadsheetId, $range);
         $values = $response->getValues();
@@ -53,6 +60,30 @@ class CheckCommand extends Command
             $courses = $this->processValues($values);
             $this->sendMail($courses, $day);
         }
+    }
+
+    private function getDay()
+    {
+        
+        $arrDate = getdate();
+        if ($arrDate['wday'] == 0 || $arrDate['wday'] == 6) {
+            echo "It weekend";
+            return false;
+        }
+
+        $day = "";
+        $hours = $arrDate['hours'];
+        $mktime = $arrDate[0];
+	
+	if ($hours > 12 && $arrDate['wday'] == 5) {
+            $mktime = $mktime + 86400 * 3;
+        }
+        else if ($hours > 12) {
+            $mktime = $mktime + 86400;
+        }
+        $day = date('d', $mktime);  
+      
+        return $day;
     }
     
     /**
